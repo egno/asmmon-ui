@@ -1,5 +1,5 @@
 <template>
-  <div :class="[className, state]" :id="id" :style="{height:height,width:width}">
+  <div :class="[className, state]" :id="id" :style="{height:height,width:width}" :title="note">
     <div class="tile-title">
       {{title}}
     </div>
@@ -27,6 +27,10 @@ export default {
     height: {
       type: String,
       default: 'auto'
+    },
+    note: {
+      type: String,
+      default: ''
     },
     state: {
       type: String,

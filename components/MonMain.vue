@@ -159,16 +159,16 @@ export default {
       current.AVG_PosASM = Math.round(
         CShiftValues.reduce((r, x) => r + x, 0) / CShiftValues.length,
         0)
-      current.ASMEndTimeFactT = (current.PosASMAll > current.PosASMEnd)
-        ? new Date(
-          new Date(current.CntDateMax).getTime() +
-          (current.PosASMAll - current.PosASMEnd) / current.AVG_PosASM * 60000 * 60
-        )
-        : current.ASMEndTimePlanT
-      current.ASMEndTimeFact = this.dateToString(current.ASMEndTimeFactT)
       current.AVG_PosASM60min = Math.round(
         this.AVG_PosASM60min(current, this.values)
       )
+      current.ASMEndTimeFactT = (current.PosASMAll > current.PosASMEnd)
+        ? new Date(
+          new Date(current.CntDateMax).getTime() +
+          (current.PosASMAll - current.PosASMEnd) / current.AVG_PosASM60min * 60000 * 60
+        )
+        : current.ASMEndTimePlanT
+      current.ASMEndTimeFact = this.dateToString(current.ASMEndTimeFactT)
       return current
     },
     doneProgress () {

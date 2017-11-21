@@ -162,7 +162,7 @@ export default {
       current.ASMEndTimeFactT = (current.PosASMAll > current.PosASMEnd)
         ? new Date(
           new Date(current.CntDateMax).getTime() +
-          (current.PosASMAll - current.PosASMEnd) / current.AVG_PosASM * 60000 * 60
+          (current.PosASMAll - current.PosASMEnd) / current.AVG_PosASM60min * 60000 * 60
         )
         : current.ASMEndTimePlanT
       current.ASMEndTimeFact = this.dateToString(current.ASMEndTimeFactT)

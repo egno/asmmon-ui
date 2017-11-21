@@ -1,6 +1,6 @@
 <template>
   <div :class="className" :id="id" :style="{height:height,width:width}">
-    <div v-if="data" class="tile-container">
+    <div v-if="data" class="tile-container" title="Количество корзин, прошедших через зону за последнюю минуту">
       <mon-tile v-for="item in data"
       :key="item.StationName"
       :title="(item.StationRealName || item.StationName)"

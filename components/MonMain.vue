@@ -201,7 +201,7 @@ export default {
     },
     speedAttention () {
       if (!this.current) return
-      return (this.current.AVG_PosASM < this.current.RSpeed) ? 'attention' : 'normal'
+      return (this.current.AVG_PosASM60min < this.current.RSpeed) ? 'attention' : 'normal'
     },
     times () {
       if (!this.loadedCurrent) return

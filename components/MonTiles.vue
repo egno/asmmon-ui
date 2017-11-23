@@ -3,8 +3,8 @@
     <div v-if="data" class="tile-container" title="Количество корзин, прошедших через зону за последнюю минуту">
       <mon-tile v-for="item in data"
       :key="item.StationName"
-      :title="(item.StationRealName || item.StationName)"
-      :value="item.CntValue"
+      :title="item.StationName"
+      :value="alertTime(item)"
       :state="state(item)"
       :note="note(item)"
       ></mon-tile>
@@ -43,9 +43,15 @@ export default {
     MonTile
   },
   methods: {
+    alertTime (item) {
+      if (item.CntValue) return
+      return (item.DownTime > 60) ? '>60' : item.DownTime
+    },
     note (item) {
       if (!item) return
-      return 'Зона: ' + item.StationName + ' MIN: ' + item.MinValueReal + ' MAX: ' + item.MaxValue
+      return 'Зона ' + (item.StationRealName || item.StationName) + ': ' + item.CntValue +
+        ' (MIN: ' + item.MinValueReal + ' MAX: ' + item.MaxValue + ')' +
+        ((this.alertTime(item)) ? (' Простой: ' + this.alertTime(item)) + ' мин.' : '')
     },
     state (item) {
       if (!item) return

@@ -34,7 +34,7 @@
     :value="doneProgress"
     :title="doneProgressText"
     ></mon-progress>
-    <mon-tiles
+    <mon-tiles v-if="current"
     :data="stations"
     ></mon-tiles>
     <!-- <button >{{ this.timeCounters.counters.normal }}</button> -->
@@ -234,8 +234,8 @@ export default {
       const filtered = arr.filter(x => x.CntDateMax <= current.CntDateMax && x.CntDateMax >= ago60min)
         .sort((a, b) => (a.CntDateMax > b.CntDateMax) ? 1 : -1)
         .slice(-this.avg)
-        .filter((x) => (x.CShift) && (x.PosASM60min) && (x.CShift === current.CShift))
-        .map(x => x.PosASM60min)
+        .filter((x) => (x.CShift) && (x.CShift === current.CShift))
+        .map(x => x.PosASM60min || 0)
       if (!filtered.length) return
       let res = filtered.reduce((r, x) => (+r || 0) + (+x || 0), 0) / filtered.length
       return res || 0
@@ -318,7 +318,7 @@ export default {
     getStations () {
       this.queryError = ''
       this.note = 'Запрос данных...'
-      this.queryInProcess += 1
+      // this.queryInProcess += 1
       axios.get(this.url + 'stations/' + this.server + '/')
         .then((res) => {
           res.data = res.data.map((x) => {
@@ -347,13 +347,13 @@ export default {
             , {})
           )
           this.stations = stations.sort((a, b) => (a.StationName > b.StationName) ? 1 : -1)
-          this.queryInProcess -= 1
+          // this.queryInProcess -= 1
           this.note = ''
         })
         .catch((err) => {
           this.note = ''
           this.queryError = 'Нет ответа от сервера'
-          this.queryInProcess -= 1
+          // this.queryInProcess -= 1
           console.log(err)
         })
     },
@@ -376,6 +376,9 @@ export default {
       if (!emptyValues.length) return
       const queryDate = emptyValues[emptyValues.length - 1].CntDateMax
       this.getCounters(this.partCount, queryDate)
+    },
+    onStart () {
+      this.startTimer()
     },
     setHistoryItemsState (state, start, end) {
       this.values.map(x => {
@@ -406,12 +409,13 @@ export default {
   },
   watch: {
     'current': 'loadAllHistoryParts',
-    'server': 'startTimer'
+    'server': 'onStart'
   },
   mounted () {
     this.getCounters()
     this.startTimer()
     this.getServers()
+    this.getStations()
   },
   beforeDestroy () {
     this.stopTimer()

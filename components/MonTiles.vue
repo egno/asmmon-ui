@@ -49,7 +49,7 @@ export default {
     },
     note (item) {
       if (!item) return
-      return 'Зона ' + (item.StationRealName || item.StationName) + ': ' + item.CntValue +
+      return 'Зона ' + (item.StationRealName || item.StationName) + ': ' + (item.CntValue || 0)+
         ' (MIN: ' + item.MinValueReal + ' MAX: ' + item.MaxValue + ')' +
         ((this.alertTime(item)) ? (' Простой: ' + this.alertTime(item)) + ' мин.' : '')
     },
@@ -57,17 +57,17 @@ export default {
       if (!item) return
       if (!item.CntValue && (item.DownTime > 60)) return 'Offline'
       if (
-        (item.CntValue >= (item.MaxValue + item.AlertDiff))
+        (item.CntValue >= item.MaxValue)
       ) return 'MaxAlert'
       if (
-        (item.CntValue >= (item.MaxValue + item.WarningDiff))
+        (item.CntValue >= (item.MaxValue - (item.WarningDiff || 0)))
       ) return 'MaxWarning'
       if (
         (!item.CntValue) ||
-        (item.CntValue < (item.MinValueReal - item.AlertDiff))
+        (item.CntValue < item.MinValueReal)
       ) return 'MinAlert'
       if (
-        (item.CntValue < (item.MinValueReal - item.WarningDiff))
+        (item.CntValue < (item.MinValueReal + (item.WarningDiff || 0)))
       ) return 'MinWarning'
       return 'Normal'
     }

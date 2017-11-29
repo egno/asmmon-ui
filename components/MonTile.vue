@@ -4,7 +4,7 @@
       {{title}}
     </div>
     <div class="tile-content">
-      {{value}}
+      {{value || "&nbsp;" }}
     </div>
   </div>
 </template>
@@ -67,24 +67,31 @@ export default {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 0.3em;
-  border: 1px solid gray;
+  padding: 0.1em;
+  margin: 1px;
+  border: 4px solid #282828;
+}
+.tile-title {
+  color: #999;
 }
 .tile-content {
   margin: auto;
   font-weight: bold;
-  color: #999;
+  color: #777;
 }
 .MinAlert {
-  background: #a00;
+  border-color: #600;
 }
 .MinWarning {
-  background: #770;
+  border-color: #770;
 }
 .MaxAlert {
-  background: #a00;
+  border-color: #a00;
 }
 .MaxWarning {
-  background: #770;
+  border-color: #770;
+}
+.Normal {
+  border-color: #040;
 }
 </style>

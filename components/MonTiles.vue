@@ -55,6 +55,7 @@ export default {
     },
     state (item) {
       if (!item) return
+      if (!item.CntValue && (item.DownTime > 60)) return 'Offline'
       if (
         (item.CntValue >= (item.MaxValue + item.AlertDiff))
       ) return 'MaxAlert'

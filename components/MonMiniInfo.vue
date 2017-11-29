@@ -110,7 +110,7 @@ export default {
     },
     stopTimer () {
       if (this.interval) {
-        console.log('stop', this.interval)
+        // console.log('stop', this.interval)
         window.clearInterval(this.interval)
       }
     },

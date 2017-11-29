@@ -321,7 +321,32 @@ export default {
       this.queryInProcess += 1
       axios.get(this.url + 'stations/' + this.server + '/')
         .then((res) => {
-          this.stations = res.data.sort((a, b) => (a.StationName > b.StationName) ? 1 : -1)
+          res.data = res.data.map((x) => {
+            x.stations = x.StationName.split(',').map((sx) => sx.trim())
+            return x
+          })
+          let stations = res.data
+          .map((x) => x.stations)
+          .reduce((r, x) => [...new Set(r.concat(x))], [])
+          .sort((a, b) => (a > b) ? 1 : -1)
+          .map(x => res.data
+            .filter(dx => dx.stations.indexOf(x) > -1)
+            .reduce((dr, dx) =>
+            {
+              dr.StationName = dr.StationName || x
+              dr.StationRealName = dr.StationRealName || x
+              dr.DownTime = ((dr.DownTime || 1000) > (dx.DownTime || 0)) ? dx.DownTime : dr.DownTime
+              dr.MinValue = ((dr.MinValue || 1000) > (dx.MinValue || 0)) ? dx.MinValue : dr.MinValue
+              dr.MinValueReal = ((dr.MinValueReal || 1000) > (dx.MinValueReal || 0)) ? dx.MinValueReal : dr.MinValueReal
+              dr.MaxValue = ((dr.MaxValue || 0) < dx.MaxValue) ? dx.MaxValue : dr.MaxValue
+              dr.CntValue = ((dr.CntValue || 0) < dx.CntValue) ? dx.CntValue : dr.CntValue
+              dr.AlertDiff = ((dr.AlertDiff || 0) < dx.AlertDiff) ? dx.AlertDiff : dr.AlertDiff
+              dr.WarningDiff = ((dr.WarningDiff || 0) < dx.WarningDiff) ? dx.WarningDiff : dr.WarningDiff
+              return dr
+            }
+            , {})
+          )
+          this.stations = stations.sort((a, b) => (a.StationName > b.StationName) ? 1 : -1)
           this.queryInProcess -= 1
           this.note = ''
         })

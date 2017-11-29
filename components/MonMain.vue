@@ -378,6 +378,7 @@ export default {
       this.getCounters(this.partCount, queryDate)
     },
     onStart () {
+      document.title = 'ASM monitor - ' + this.city
       this.startTimer()
     },
     setHistoryItemsState (state, start, end) {

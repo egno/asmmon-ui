@@ -80,16 +80,16 @@ export default {
   color: #777;
 }
 .MinAlert {
-  border-color: #600;
+  border-color: #800;
 }
 .MinWarning {
   border-color: #770;
 }
 .MaxAlert {
-  border-color: #a00;
+  border-color: #600;
 }
 .MaxWarning {
-  border-color: #770;
+  border-color: #550;
 }
 .Normal {
   border-color: #040;

@@ -14,11 +14,9 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "echarts": "3.7.2",
+    "echarts": "3.8.5",
     "nuxt": "^1.0.0-rc11",
-    "vue-echarts": "^2.5.0",
-    "vue2-loading-bar": "0.0.1",
-    "zrender": "3.6.2"
+    "vue2-loading-bar": "0.0.1"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",

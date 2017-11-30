@@ -49,7 +49,7 @@ export default {
     },
     note (item) {
       if (!item) return
-      return 'Зона ' + (item.StationRealName || item.StationName) + ': ' + (item.CntValue || 0)+
+      return 'Зона ' + (item.StationRealName || item.StationName) + ': ' + (item.CntValue || 0) +
         ' (MIN: ' + item.MinValueReal + ' MAX: ' + item.MaxValue + ')' +
         ((this.alertTime(item)) ? (' Простой: ' + this.alertTime(item)) + ' мин.' : '')
     },

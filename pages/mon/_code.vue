@@ -5,7 +5,6 @@
     width="100%"
     height="50%">
     </mon-main>
-    <notes></notes>
   </section>
 </template>
 

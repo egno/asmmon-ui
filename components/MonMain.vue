@@ -146,15 +146,15 @@ export default {
       if (!this.loadedCurrent) return
       let current = {}
       Object.assign(current, this.loadedCurrent)
-      current.ASMEndTimePlanT = new Date(current.ASMEndTimePlan)
+      current.ASMEndTimePlanT = new Date(current.ASMEndTimePlan.replace(' ', 'T'))
       const hoursLeft = Math.max(
-        (current.ASMEndTimePlanT.getTime() - new Date(current.CntDateMax).getTime()), 0
+        (current.ASMEndTimePlanT.getTime() - new Date(current.CntDateMax.replace(' ', 'T')).getTime()), 0
       ) / 60000 / 60
       current.RSpeed = (hoursLeft)
         ? Math.round((current.PosASMAll - current.PosASMEnd) / hoursLeft, 0)
         : 0
       const CShiftValues = this.times.map(x => this.history[this.dateToString(x)])
-        .filter(x => (x) && x.CShift === current.CShift && x.PosASM60min && (new Date(x.CntDateMax) <= new Date(current.CntDateMax)))
+        .filter(x => (x) && x.CShift === current.CShift && x.PosASM60min && (new Date(x.CntDateMax.replace(' ', 'T')) <= new Date(current.CntDateMax.replace(' ', 'T'))))
         .map(x => x.PosASM60min)
       current.AVG_PosASM = Math.round(
         CShiftValues.reduce((r, x) => r + x, 0) / CShiftValues.length,
@@ -164,7 +164,7 @@ export default {
       )
       current.ASMEndTimeFactT = (current.PosASMAll > current.PosASMEnd)
         ? new Date(
-          new Date(current.CntDateMax).getTime() +
+          new Date(current.CntDateMax.replace(' ', 'T')).getTime() +
           (current.PosASMAll - current.PosASMEnd) / current.AVG_PosASM60min * 60000 * 60
         )
         : current.ASMEndTimePlanT
@@ -205,7 +205,7 @@ export default {
     },
     times () {
       if (!this.loadedCurrent) return
-      return Array.apply(0, Array(this.hoursAgo * 60 / this.timeMinutesInterval)).map((x, i, arr) => new Date(new Date(this.loadedCurrent.CntDateMax).getTime() - (arr.length - i - 1) * this.timeMinutesInterval * 60000))
+      return Array.apply(0, Array(this.hoursAgo * 60 / this.timeMinutesInterval)).map((x, i, arr) => new Date(new Date(this.loadedCurrent.CntDateMax.replace(' ', 'T')).getTime() - (arr.length - i - 1) * this.timeMinutesInterval * 60000))
     },
     timeTicks () {
       if (!this.times) return
@@ -234,7 +234,8 @@ export default {
   },
   methods: {
     AVG_PosASM60min (current, arr) {
-      const ago60min = this.dateToString(new Date(new Date(current.CntDateMax).getTime() - 60 * 60000))
+      if (!current.CntDateMax) return
+      const ago60min = this.dateToString(new Date(new Date(current.CntDateMax.replace(' ', 'T')).getTime() - 60 * 60000))
       const filtered = arr.filter(x => x.CntDateMax <= current.CntDateMax && x.CntDateMax >= ago60min)
         .sort((a, b) => (a.CntDateMax > b.CntDateMax) ? 1 : -1)
         .slice(-this.avg)

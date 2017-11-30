@@ -95,7 +95,7 @@ export default {
       this.note = 'Запрос данных...'
       this.queryError = ''
       this.queryInProcess += 1
-      axios.get(this.url + 'counters/' + this.server + '/?count=' + count + '&time=' + time)
+      axios.get(this.url + 'counters/' + this.server + '/?count=' + count + '&time=' + (time || '&noCache=' + (new Date().getTime()) + Math.random()))
         .then((res) => {
           this.loadedCurrent = res.data
           this.queryInProcess -= 1

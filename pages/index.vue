@@ -79,6 +79,7 @@ body {
   margin: 2em;
 }
 .tiles {
+  width: calc(100% - 4em);
   margin: 2em;
   display: flex;
   flex-direction: row;

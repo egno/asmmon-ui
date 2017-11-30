@@ -78,6 +78,7 @@ export default {
     partCount: {
       default: 50
     },
+    query: {},
     timeMinutesInterval: {
       default: 5
     },
@@ -119,7 +120,6 @@ export default {
         }
       },
       refreshTime: 0,
-      countData: 40,
       interval: null,
       loadedCurrent: null,
       note: '',

@@ -273,7 +273,7 @@ export default {
       this.queryError = ''
       this.note = 'Запрос данных...'
       this.queryInProcess += 1
-      axios.get(this.url + 'counters/' + this.server + '/?count=' + count + '&time=' + time)
+      axios.get(this.url + 'counters/' + this.server + '/?count=' + count + '&time=' + (time || '&noCache=' + (new Date().getTime()) + Math.random()))
         .then((res) => {
           if (!time) {
             if (!this.loadedCurrent || (this.loadedCurrent && res.data[0].CntDateMax !== this.loadedCurrent.CntDateMax)) {
@@ -324,7 +324,7 @@ export default {
       this.queryError = ''
       this.note = 'Запрос данных...'
       // this.queryInProcess += 1
-      axios.get(this.url + 'stations/' + this.server + '/')
+      axios.get(this.url + 'stations/' + this.server + '/' + '?noCache=' + (new Date().getTime()) + Math.random())
         .then((res) => {
           res.data = res.data.map((x) => {
             x.stations = x.StationName.split(',').map((sx) => sx.trim())
@@ -389,6 +389,7 @@ export default {
       this.startTimer()
     },
     setHistoryItemsState (state, start, end) {
+      if (!this.values) return
       this.values.map(x => {
         if (x.CntDateMax >= start && x.CntDateMax <= end) {
           this.$set(this.history, x.CntDateMax, this.history[x.CntDateMax] || {state: state})

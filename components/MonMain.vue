@@ -72,6 +72,10 @@ export default {
         return 12
       }
     },
+    type: {
+      type: String,
+      default: 'all'
+    },
     hoursAgo: {
       default: 24
     },
@@ -171,6 +175,9 @@ export default {
       current.ASMEndTimeFact = this.dateToString(current.ASMEndTimeFactT)
       return current
     },
+    cShiftTimeBegin () {
+      return '2017-12-01 09:00'
+    },
     doneProgress () {
       if (!this.current) return 0
       return this.current.PosASMEnd / this.current.PosASMAll
@@ -209,7 +216,10 @@ export default {
     },
     timeTicks () {
       if (!this.times) return
-      return this.times.map(x => {
+      let times = ((this.type === 'stretch') && this.history)
+        ? this.times.filter((x) => this.dateToString(x) >= this.cShiftTimeBegin)
+        : this.times
+      return times.map(x => {
         let dateString = this.dateToString(x)
         if (!dateString) return
         return this.dateToString(x).slice(11)
@@ -287,7 +297,7 @@ export default {
               time
             )
           }
-          res.data.map((x, i, arr) => {
+          res.data.filter(x => (this.type === 'all') || (!this.current) || (x.CShift === this.current.CShift)).map((x, i, arr) => {
             x.state = 'success'
             this.$set(this.history, x.CntDateMax, x)
             return x

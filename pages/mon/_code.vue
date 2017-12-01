@@ -3,6 +3,7 @@
     <mon-main
     :server="code"
     :hoursAgo="$route.query.hours || 24"
+    :type="$route.query.type"
     width="100%"
     height="50%">
     </mon-main>

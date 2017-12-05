@@ -1,7 +1,6 @@
 image: node:latest
 
 before_script:
-  - cd web
   - npm install
 
 cache:

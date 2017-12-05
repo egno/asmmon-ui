@@ -1,0 +1,25 @@
+image: node:latest
+
+before_script:
+  - cd web
+  - npm install
+
+cache:
+  paths:
+    - node_modules
+
+test:lint:
+  script:
+    - npm run lint
+
+publish:
+  stage: deploy
+  script:
+    - npm run generate
+    - apt-get update
+    - apt-get install -y openssh-client rsync
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_dsa
+    - chmod 600 ~/.ssh/id_dsa
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - rsync -rav --delete dist/ gitlab@nsk-docker01:/mnt/data/deploy/asm/web/
